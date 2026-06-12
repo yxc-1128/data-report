@@ -1,6 +1,6 @@
 # 📊 data-report — 单位财务收支报表系统
 
-基于 Node.js + ECharts 的财务收支管理与可视化系统，支持 Office 文件导入、发票 OCR 识别、报表 PDF 导出。
+基于 Node.js + ECharts 的财务收支管理与可视化系统，支持 Office 文件导入、发票 OCR 识别、报表 excel 导出。
 
 ## 功能
 
