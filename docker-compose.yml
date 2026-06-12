@@ -1,0 +1,14 @@
+services:
+  data-report:
+    build: .
+    container_name: data-report
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - SESSION_SECRET=change-this-to-your-own-random-secret-string

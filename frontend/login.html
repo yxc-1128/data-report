@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="收支报表">
+  <title>登录 - 财务收支报表系统</title>
+  <meta name="theme-color" content="#4fc3f7">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png">
+  <title>登录 - 财务收支报表系统</title>
+  <style>
+    :root {
+      --bg: #0f1923; --bg-card: #1a2634; --text: #e0e6ed;
+      --text-muted: #8899aa; --accent: #4fc3f7; --border: #2a3a4a;
+      --radius: 8px; --expense: #ef5350;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .login-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 40px; width: 380px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+    .login-box h1 { font-size: 22px; text-align: center; margin-bottom: 6px; color: var(--accent); }
+    .login-box .sub { font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+    .form-group input {
+      width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text); font-size: 14px; outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus { border-color: var(--accent); }
+    .btn {
+      width: 100%; padding: 12px; border: none; border-radius: 6px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      background: var(--accent); color: #000; margin-top: 8px;
+    }
+    .btn:hover { opacity: 0.85; }
+    .error { color: var(--expense); font-size: 12px; text-align: center; margin-top: 12px; display: none; }
+    .error.show { display: block; }
+    @media (max-width: 480px) {
+      .login-box { width: 90%; padding: 28px 20px; }
+      .login-box h1 { font-size: 18px; }
+    }
+    .hint { color: var(--text-muted); font-size: 11px; text-align: center; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1>📊 收支报表系统</h1>
+    <div class="sub">v2.6.2 · 请登录</div>
+    <form onsubmit="return doLogin(event)">
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" id="username" placeholder="admin" autofocus autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="password" placeholder="········" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn" id="btn-login">登 录</button>
+      <div class="error" id="error-msg"></div>
+    </form>
+  </div>
+
+  <script>
+    async function doLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
+      if (!u || !p) return showErr('请输入用户名和密码');
+      const btn = document.getElementById('btn-login');
+      btn.disabled = true; btn.textContent = '登录中...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const data = await res.json();
+        if (!res.ok) { showErr(data.error || '登录失败'); btn.disabled = false; btn.textContent = '登 录'; return; }
+        window.location.href = '/';
+      } catch (err) {
+        showErr('网络错误，请重试');
+        btn.disabled = false; btn.textContent = '登 录';
+      }
+    }
+
+    function showErr(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg; el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 4000);
+    }
+
+    // 如果已登录，直接跳转
+    fetch('/api/auth/me').then(r => r.json()).then(d => {
+      if (d.loggedIn) window.location.href = '/';
+    });
+  </script>
+</body>
+</html>

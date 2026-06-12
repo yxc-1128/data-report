@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="收支报表">
+  <title>财务收支报表系统</title>
+  <meta name="theme-color" content="#4fc3f7">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- 侧边栏 -->
+    <nav id="sidebar">
+      <div class="logo">📊 收支报表</div>
+      <ul class="nav-links">
+        <li><a href="#dashboard" class="nav-item active" data-page="dashboard">📈 仪表盘</a></li>
+        <li><a href="#records" class="nav-item" data-page="records">💰 收支记录</a></li>
+        <li><a href="#entities" class="nav-item" data-page="entities">🏢 单位管理</a></li>
+        <li><a href="#invoices" class="nav-item" data-page="invoices">🧾 发票管理</a></li>
+        <li><a href="#import" class="nav-item" data-page="import">📥 文件导入</a></li>
+      </ul>
+      <div class="nav-footer">
+        <small>v2.7.1</small>
+        <a href="#" onclick="App.changePassword();return false;" style="display:block;margin-top:6px;font-size:11px;color:var(--text-muted);text-decoration:none;">🔒 修改密码</a>
+        <a href="#" onclick="App.createUser();return false;" style="display:block;margin-top:2px;font-size:11px;color:var(--text-muted);text-decoration:none;">👤 创建用户</a>
+        <a href="#" onclick="App.logout();return false;" style="display:block;margin-top:2px;font-size:11px;color:var(--expense);text-decoration:none;">退出登录</a>
+      </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main id="content">
+      <div id="page-dashboard" class="page active"></div>
+      <div id="page-records" class="page"></div>
+      <div id="page-entities" class="page"></div>
+      <div id="page-invoices" class="page"></div>
+      <div id="page-import" class="page"></div>
+    </main>
+
+    <!-- 底部导航栏（移动端显示） -->
+    <nav id="bottom-nav">
+      <a class="bn-item active" data-page="dashboard"><span class="bn-icon">📈</span>仪表盘</a>
+      <a class="bn-item" data-page="records"><span class="bn-icon">💰</span>收支</a>
+      <a class="bn-item" data-page="entities"><span class="bn-icon">🏢</span>单位</a>
+      <a class="bn-item" data-page="invoices"><span class="bn-icon">🧾</span>发票</a>
+      <a class="bn-item" data-page="import"><span class="bn-icon">📥</span>导入</a>
+    </nav>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- 模态框容器 -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <div class="modal" id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/pages/dashboard.js"></script>
+  <script src="js/pages/records.js"></script>
+  <script src="js/pages/entities.js"></script>
+  <script src="js/pages/invoices.js"></script>
+  <script src="js/pages/import.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+</html>
