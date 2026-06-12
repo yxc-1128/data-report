@@ -11,7 +11,7 @@
 | 🏢 单位管理 | 多单位/部门数据隔离 |
 | 🧾 发票管理 | 上传发票图片 → 自动 OCR 识别金额/日期/抬头 → 关联记录 |
 | 📥 文件导入 | 上传 Excel(.xlsx/.xls) / CSV / Word(.docx) → 自动解析 → 列映射 → 批量导入为收支记录 |
-| 📄 报表导出 | 生成 PDF 报表、图表 PNG 导出 |
+| 📄 报表导出 | 生成 excel报表 |
 
 ## 技术栈
 
@@ -130,7 +130,7 @@ data-report/
 │   │   └── services/
 │   │       ├── parser.js      # Excel/CSV/Word 解析
 │   │       ├── ocr.js         # Tesseract OCR
-│   │       └── export.js      # PDF 生成
+│   │       └── export.js      # excel 生成
 │   ├── data/                  # SQLite 数据库 (自动创建)
 │   └── uploads/               # 上传文件目录
 ├── Dockerfile
@@ -170,7 +170,7 @@ data-report/
 | DELETE | `/api/files/:id` | 删除文件 |
 | | | |
 | GET | `/api/reports/dashboard` | 仪表盘汇总数据 |
-| GET | `/api/reports/pdf` | 导出 PDF 报表 |
+| GET | `/api/reports/excel` | 导出 excel 报表 |
 
 ---
 
@@ -181,4 +181,4 @@ data-report/
 3. **手动录入** — 在「收支记录」中直接新增单条记录
 4. **上传发票** — 在「发票管理」中上传发票图片，自动 OCR 识别金额、日期、抬头，然后关联到相应记录
 5. **查看报表** — 仪表盘实时展示图表，可按单位和日期筛选
-6. **导出 PDF** — 在收支记录页点击「导出 PDF」
+6. **导出 PDF** — 在收支记录页点击「导出 excel」
